@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:movilfinalapp/models/user.dart';
 import 'package:movilfinalapp/services/auth.dart';
+import 'package:movilfinalapp/shared/constants.dart';
+import 'package:movilfinalapp/shared/loading.dart';
 
 class SignIn extends StatefulWidget {
   final Function toggleView;
@@ -21,12 +23,14 @@ class _SignInState extends State<SignIn> {
   final _formKey = GlobalKey<FormState>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
+  bool loading = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(
-          backgroundColor: Color.fromRGBO(154, 183, 211, 1),
+          backgroundColor: appColor,
           elevation: 0.0,
           title: Text('Sign in'),
         ),
@@ -43,9 +47,7 @@ class _SignInState extends State<SignIn> {
                           borderSide: BorderSide(
                               color: Colors.greenAccent, width: 5.0)),
                       enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                            color: Color.fromRGBO(154, 183, 211, 1),
-                            width: 5.0),
+                        borderSide: BorderSide(color: appColor, width: 5.0),
                       ),
                       focusedErrorBorder: OutlineInputBorder(
                         borderSide:
@@ -74,9 +76,7 @@ class _SignInState extends State<SignIn> {
                           borderSide: BorderSide(
                               color: Colors.greenAccent, width: 5.0)),
                       enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                            color: Color.fromRGBO(154, 183, 211, 1),
-                            width: 5.0),
+                        borderSide: BorderSide(color: appColor, width: 5.0),
                       ),
                       focusedErrorBorder: OutlineInputBorder(
                         borderSide:
@@ -98,10 +98,12 @@ class _SignInState extends State<SignIn> {
                 ),
                 SizedBox(height: 20.0),
                 RaisedButton(
-                  color: Color.fromRGBO(154, 183, 211, 1),
+                  color: appColor,
                   child: Text('Sign in', style: TextStyle(color: Colors.white)),
                   onPressed: () async {
                     if (_formKey.currentState.validate()) {
+                      setState(() => loading = true); // Show loading widget
+
                       try {
                         User user = await _auth.signIn(
                             emailController.text, passwordController.text);
@@ -111,13 +113,16 @@ class _SignInState extends State<SignIn> {
                           backgroundColor: Colors.red,
                         );
                         _scaffoldKey.currentState.showSnackBar(snackbar);
+
+                        setState(() => loading = false); // Hide loading widget
                       }
                     }
                   },
                 ),
                 FlatButton(
                     onPressed: () => widget.toggleView(),
-                    child: Text('Sign up'))
+                    child: Text('Sign up')),
+                loading ? Loading() : SizedBox()
               ]),
             )));
   }
