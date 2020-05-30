@@ -4,20 +4,18 @@ import 'package:movilfinalapp/models/user.dart';
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
+  User user;
+
   User userFromFb(FirebaseUser user) {
     return user != null ? User(uid: user.uid) : null;
   }
 
-  Stream<User> get user {
-    return _auth.onAuthStateChanged.map(userFromFb);
-  }
-
-  Future<User> signIn(String email, String password) async {
+  Future signIn(String email, String password) async {
     try {
       AuthResult res = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
 
-      return userFromFb(res.user);
+      user = userFromFb(res.user);
     } catch (error) {
       throw error;
     }
