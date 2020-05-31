@@ -1,3 +1,3 @@
 import 'package:flutter/material.dart';
 
-Color appColor = Color.fromRGBO(154, 183, 211, 1);
+Color appColor = Color.fromRGBO(253, 253, 150, 1.0);

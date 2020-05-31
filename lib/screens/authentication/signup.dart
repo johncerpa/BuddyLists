@@ -1,9 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:movilfinalapp/base/model.dart';
 import 'package:movilfinalapp/base/view.dart';
 import 'package:movilfinalapp/models/user.dart';
-import 'package:movilfinalapp/services/auth.dart';
 import 'package:movilfinalapp/shared/constants.dart';
 import 'package:movilfinalapp/shared/loading.dart';
 import 'package:movilfinalapp/viewmodels/signup_vm.dart';
@@ -26,31 +24,43 @@ class _SignUpState extends State<SignUp> {
   @override
   Widget build(BuildContext context) {
     return BaseView<SignUpViewModel>(
-        builder: (context, model, child) => Scaffold(
-            key: _scaffoldKey,
-            appBar: AppBar(
-              backgroundColor: appColor,
-              elevation: 0.0,
-              title: Text('Sign up'),
-            ),
-            body: Container(
-                padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
-                child: Form(
-                  key: _formKey,
-                  child: Column(children: <Widget>[
-                    emailField(),
-                    SizedBox(
-                      height: 20.0,
-                    ),
-                    passwordField(),
-                    SizedBox(height: 20.0),
-                    signUpButton(model),
-                    FlatButton(
-                        onPressed: () => widget.toggleView(),
-                        child: Text('Sign in')),
-                    model.state == ViewState.Busy ? Loading() : SizedBox()
-                  ]),
-                ))));
+        builder: (context, model, child) => Container(
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                fit: BoxFit.cover,
+                image: NetworkImage(
+                    'https://sabinereinhart.com/universal/packages/slides/lib/layouts/cover-page/landing-full-center-01/img/gallery/0.jpg?format=100w'),
+              )),
+              child: Scaffold(
+                  backgroundColor: Colors.transparent,
+                  key: _scaffoldKey,
+                  appBar: AppBar(
+                    backgroundColor: appColor,
+                    elevation: 0.0,
+                    title:
+                        Text('Sign up', style: TextStyle(color: Colors.black)),
+                  ),
+                  body: Container(
+                      margin: EdgeInsets.only(top: 80.0),
+                      padding: EdgeInsets.symmetric(
+                          vertical: 20.0, horizontal: 50.0),
+                      child: Form(
+                        key: _formKey,
+                        child: Column(children: <Widget>[
+                          emailField(),
+                          SizedBox(
+                            height: 20.0,
+                          ),
+                          passwordField(),
+                          SizedBox(height: 20.0),
+                          signUpButton(model),
+                          RaisedButton(
+                              onPressed: () => widget.toggleView(),
+                              child: Text('Sign in')),
+                          model.state == ViewState.Busy ? Loading() : SizedBox()
+                        ]),
+                      ))),
+            ));
   }
 
   Widget emailField() {
@@ -110,7 +120,7 @@ class _SignUpState extends State<SignUp> {
   Widget signUpButton(SignUpViewModel model) {
     return RaisedButton(
       color: appColor,
-      child: Text('Sign up', style: TextStyle(color: Colors.white)),
+      child: Text('Sign up', style: TextStyle(color: Colors.black)),
       onPressed: () async {
         if (_formKey.currentState.validate()) {
           try {

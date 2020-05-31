@@ -15,16 +15,21 @@ class Home extends StatelessWidget {
             appBar: AppBar(
               backgroundColor: appColor,
               elevation: 0.0,
-              title: Text('Home'),
+              title: Text('Home', style: TextStyle(color: Colors.black)),
               actions: <Widget>[
                 IconButton(
                   onPressed: () async {
                     model.logout();
                   },
                   icon:
-                      Icon(Icons.exit_to_app, color: Colors.white, size: 24.0),
+                      Icon(Icons.exit_to_app, color: Colors.black, size: 24.0),
                 )
               ],
+            ),
+            floatingActionButton: FloatingActionButton(
+              backgroundColor: appColor,
+              onPressed: () {},
+              child: Icon(Icons.add, color: Colors.black, size: 24.0),
             ),
             body: model.state == ViewState.Busy
                 ? Center(
@@ -55,11 +60,17 @@ class Home extends StatelessWidget {
   Widget listOfProducts() {
     List<Product> products = [
       Product(name: 'Tomato', price: 4.0),
-      Product(name: 'Pizza', price: 25.0)
+      Product(name: 'Pizza', price: 25.0),
+      Product(name: 'Pizza', price: 25.0),
+      Product(name: 'Pizza', price: 25.0),
+      Product(name: 'Pizza', price: 25.0),
+      Product(name: 'Pizza', price: 25.0),
+      Product(name: 'Pizza', price: 25.0),
+      Product(name: 'Pizza', price: 25.0),
     ];
 
     return Container(
-        height: 600.0,
+        height: 570.0,
         child: ListView.builder(
           itemCount: products.length,
           itemBuilder: (context, position) {

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movilfinalapp/base/model.dart';
 import 'package:movilfinalapp/base/view.dart';
-import 'package:movilfinalapp/locator.dart';
 import 'package:movilfinalapp/models/user.dart';
 import 'package:movilfinalapp/shared/constants.dart';
 import 'package:movilfinalapp/shared/loading.dart';
@@ -25,30 +24,38 @@ class _SignInState extends State<SignIn> {
   @override
   Widget build(BuildContext context) {
     return BaseView<SignInViewModel>(
-      builder: (context, model, child) => Scaffold(
-        appBar: AppBar(
-          backgroundColor: appColor,
-          elevation: 0.0,
-          title: Text('Sign in'),
+      builder: (context, model, child) => Container(
+        decoration: BoxDecoration(
+            image: DecorationImage(
+          fit: BoxFit.cover,
+          image: AssetImage('assets/images/kiwi.jpg'),
+        )),
+        child: Scaffold(
+          backgroundColor: Colors.transparent,
+          appBar: AppBar(
+              backgroundColor: appColor,
+              elevation: 0.0,
+              title: Text('Sign in', style: TextStyle(color: Colors.black))),
+          body: Container(
+              margin: EdgeInsets.only(top: 80.0),
+              padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
+              child: Form(
+                key: _formKey,
+                child: Column(children: <Widget>[
+                  emailField(),
+                  SizedBox(
+                    height: 20.0,
+                  ),
+                  passwordField(),
+                  SizedBox(height: 20.0),
+                  signInButton(model),
+                  RaisedButton(
+                      onPressed: () => widget.toggleView(),
+                      child: Text('Sign up')),
+                  model.state == ViewState.Busy ? Loading() : SizedBox()
+                ]),
+              )),
         ),
-        body: Container(
-            padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
-            child: Form(
-              key: _formKey,
-              child: Column(children: <Widget>[
-                emailField(),
-                SizedBox(
-                  height: 20.0,
-                ),
-                passwordField(),
-                SizedBox(height: 20.0),
-                signInButton(model),
-                FlatButton(
-                    onPressed: () => widget.toggleView(),
-                    child: Text('Sign up')),
-                model.state == ViewState.Busy ? Loading() : SizedBox()
-              ]),
-            )),
       ),
     );
   }
@@ -110,7 +117,7 @@ class _SignInState extends State<SignIn> {
   Widget signInButton(SignInViewModel model) {
     return RaisedButton(
       color: appColor,
-      child: Text('Sign in', style: TextStyle(color: Colors.white)),
+      child: Text('Sign in', style: TextStyle(color: Colors.black)),
       onPressed: () async {
         if (_formKey.currentState.validate()) {
           try {
