@@ -7,6 +7,7 @@ import 'package:movilfinalapp/services/auth_provider.dart';
 import 'package:movilfinalapp/shared/constants.dart';
 import 'package:movilfinalapp/shared/loading.dart';
 import 'package:movilfinalapp/viewmodels/signin_vm.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignIn extends StatefulWidget {
   final Function toggleView;
@@ -22,6 +23,8 @@ class _SignInState extends State<SignIn> {
   TextEditingController passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  bool rememberMe = false;
 
   @override
   Widget build(BuildContext context) {
@@ -43,6 +46,10 @@ class _SignInState extends State<SignIn> {
                 ),
                 passwordField(),
                 SizedBox(height: 20.0),
+                rememberMeCheckbox(),
+                SizedBox(
+                  height: 20.0,
+                ),
                 signInButton(model),
                 FlatButton(
                     onPressed: () => widget.toggleView(),
@@ -55,26 +62,42 @@ class _SignInState extends State<SignIn> {
   }
 
   Widget emailField() {
-    return TextFormField(
-      controller: emailController,
-      decoration: InputDecoration(
-          hintText: 'Email',
-          focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.greenAccent, width: 5.0)),
-          enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: appColor, width: 5.0),
-          ),
-          focusedErrorBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.red[400], width: 5.0),
-          ),
-          errorBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.red[200], width: 5.0),
-          )),
-      validator: (val) {
-        if (val.isEmpty) {
-          return 'Email cannot be empty';
+    return FutureBuilder(
+      future: getEmailAndPassword(),
+      builder: (BuildContext context, AsyncSnapshot s) {
+        if (s.hasData) {
+          if (s.data.email.length > 0 && s.data.rememberMe) {
+            emailController.text = s.data.email;
+            passwordController.text = s.data.password;
+          }
+        } else {
+          emailController.text = "";
+          passwordController.text = "";
         }
-        return null;
+
+        return TextFormField(
+          controller: emailController,
+          decoration: InputDecoration(
+              hintText: 'Email',
+              focusedBorder: OutlineInputBorder(
+                  borderSide:
+                      BorderSide(color: Colors.greenAccent, width: 5.0)),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: appColor, width: 5.0),
+              ),
+              focusedErrorBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.red[400], width: 5.0),
+              ),
+              errorBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.red[200], width: 5.0),
+              )),
+          validator: (val) {
+            if (val.isEmpty) {
+              return 'Email cannot be empty';
+            }
+            return null;
+          },
+        );
       },
     );
   }
@@ -108,6 +131,19 @@ class _SignInState extends State<SignIn> {
     );
   }
 
+  rememberMeCheckbox() {
+    return CheckboxListTile(
+        title: Text('Remember me'),
+        value: rememberMe,
+        onChanged: (bool value) {
+          AuthProvider ap = locator<AuthProvider>();
+          setState(() {
+            rememberMe = ap.setRememberMe(value);
+          });
+        },
+        secondary: const Icon(Icons.memory, color: Colors.grey));
+  }
+
   Widget signInButton(SignInViewModel model) {
     return RaisedButton(
       color: appColor,
@@ -115,9 +151,6 @@ class _SignInState extends State<SignIn> {
       onPressed: () async {
         if (_formKey.currentState.validate()) {
           try {
-            // TODO: remember me checkbox
-            bool rememberMe = false;
-
             User user = await model.signIn(
                 emailController.text, passwordController.text, rememberMe);
           } catch (error) {
@@ -131,4 +164,22 @@ class _SignInState extends State<SignIn> {
       },
     );
   }
+
+  getEmailAndPassword() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String email = prefs.getString("email") ?? "";
+    String password = prefs.getString("password") ?? "";
+    bool isRemembered = prefs.getBool("rememberMe") ?? false;
+
+    setState(() {
+      rememberMe = isRemembered;
+    });
+    return EmailPassword(email, password, isRemembered);
+  }
+}
+
+class EmailPassword {
+  String email, password;
+  bool rememberMe;
+  EmailPassword(this.email, this.password, this.rememberMe);
 }

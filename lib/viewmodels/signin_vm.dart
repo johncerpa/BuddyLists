@@ -16,6 +16,12 @@ class SignInViewModel extends BaseModel {
     try {
       await authService.signIn(email, password);
       authProvider.setSignedIn(remember);
+
+      if (remember) {
+        authProvider.rememberUser(email, password);
+      } else {
+        authProvider.forgetUser();
+      }
     } catch (error) {
       throw error;
     }

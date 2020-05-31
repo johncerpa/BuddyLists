@@ -55,12 +55,6 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
-  forgetPrefs() async {
-    final prefs = await SharedPreferences.getInstance();
-    prefs.remove('email');
-    prefs.remove('password');
-  }
-
   // Remember me logic
   rememberUser(String email, String password) async {
     final prefs = await SharedPreferences.getInstance();
