@@ -10,27 +10,16 @@ class SignInViewModel extends BaseModel {
 
   User get user => authService.user;
 
-  Future signIn(String email, String password, bool remember) async {
+  Future signIn(String email, String password) async {
     setState(ViewState.Busy);
 
     try {
       await authService.signIn(email, password);
-      authProvider.setSignedIn(remember);
-
-      if (remember) {
-        authProvider.rememberUser(email, password);
-      } else {
-        authProvider.forgetUser();
-      }
+      authProvider.setSignedIn();
     } catch (error) {
       throw error;
     }
 
-    notifyListeners();
-    setState(ViewState.Idle);
-  }
-
-  setToIdle() {
     notifyListeners();
     setState(ViewState.Idle);
   }

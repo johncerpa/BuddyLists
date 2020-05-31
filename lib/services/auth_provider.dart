@@ -5,20 +5,18 @@ class AuthProvider extends ChangeNotifier {
   String email;
   String password;
   bool signedIn;
-  bool rememberMe;
 
   AuthProvider() {
+    WidgetsFlutterBinding.ensureInitialized();
+
     email = '';
     password = '';
     signedIn = false;
     readPrefs();
   }
 
-  //
-  setSignedIn(bool remember) {
-    rememberMe = remember;
+  setSignedIn() {
     signedIn = true;
-
     savePrefs();
     notifyListeners();
   }
@@ -33,7 +31,6 @@ class AuthProvider extends ChangeNotifier {
   savePrefs() async {
     final prefs = await SharedPreferences.getInstance();
     prefs.setBool('signedIn', signedIn);
-    prefs.setBool('rememberMe', rememberMe);
     prefs.setString('email', email);
     prefs.setString('password', password);
   }
@@ -41,7 +38,6 @@ class AuthProvider extends ChangeNotifier {
   // Keep signed in logic
   readPrefs() async {
     final prefs = await SharedPreferences.getInstance();
-
     bool shouldSignIn = prefs.getBool('signedIn') ?? false;
     String savedEmail = prefs.getString('email') ?? '';
     String savedPassword = prefs.getString('password') ?? '';
@@ -50,34 +46,7 @@ class AuthProvider extends ChangeNotifier {
       email = savedEmail;
       password = savedPassword;
       signedIn = shouldSignIn;
-
       notifyListeners();
     }
-  }
-
-  // Remember me logic
-  rememberUser(String email, String password) async {
-    final prefs = await SharedPreferences.getInstance();
-    prefs.setString('email', email);
-    prefs.setString('password', password);
-  }
-
-  forgetUser() async {
-    final prefs = await SharedPreferences.getInstance();
-    prefs.remove('email');
-    prefs.remove('password');
-  }
-
-  // changeRemember
-  setRememberMe(bool remember) {
-    rememberMe = remember;
-    rememberPrefs();
-    notifyListeners();
-    return remember;
-  }
-
-  rememberPrefs() async {
-    final prefs = await SharedPreferences.getInstance();
-    prefs.setBool('rememberMe', rememberMe);
   }
 }
