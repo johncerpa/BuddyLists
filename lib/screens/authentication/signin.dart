@@ -31,13 +31,17 @@ class _SignInState extends State<SignIn> {
           image: AssetImage('assets/images/kiwi.jpg'),
         )),
         child: Scaffold(
-          backgroundColor: Colors.transparent,
           appBar: AppBar(
-              backgroundColor: appColor,
               elevation: 0.0,
-              title: Text('Sign in', style: TextStyle(color: Colors.black))),
+              backgroundColor: Colors.transparent,
+              title: Text('Sign in now!',
+                  style: TextStyle(
+                      fontSize: 24.0,
+                      color: Colors.black,
+                      fontWeight: FontWeight.w500))),
+          backgroundColor: Colors.transparent,
           body: Container(
-              margin: EdgeInsets.only(top: 80.0),
+              margin: EdgeInsets.only(top: 140.0),
               padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
               child: Form(
                 key: _formKey,
@@ -49,9 +53,18 @@ class _SignInState extends State<SignIn> {
                   passwordField(),
                   SizedBox(height: 20.0),
                   signInButton(model),
-                  RaisedButton(
-                      onPressed: () => widget.toggleView(),
-                      child: Text('Sign up')),
+                  SizedBox(height: 10.0),
+                  ButtonTheme(
+                    minWidth: 150.0,
+                    height: 50.0,
+                    child: RaisedButton(
+                        color: Colors.white,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(25.0),
+                            side: BorderSide(color: Colors.black)),
+                        onPressed: () => widget.toggleView(),
+                        child: Text('Sign up')),
+                  ),
                   model.state == ViewState.Busy ? Loading() : SizedBox()
                 ]),
               )),
@@ -66,14 +79,18 @@ class _SignInState extends State<SignIn> {
       decoration: InputDecoration(
           hintText: 'Email',
           focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(25.0),
               borderSide: BorderSide(color: Colors.greenAccent, width: 5.0)),
           enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(25.0),
             borderSide: BorderSide(color: appColor, width: 5.0),
           ),
           focusedErrorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(25.0),
             borderSide: BorderSide(color: Colors.red[400], width: 5.0),
           ),
           errorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(25.0),
             borderSide: BorderSide(color: Colors.red[200], width: 5.0),
           )),
       validator: (val) {
@@ -92,14 +109,18 @@ class _SignInState extends State<SignIn> {
       decoration: InputDecoration(
           hintText: 'Password',
           focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(25.0),
               borderSide: BorderSide(color: Colors.greenAccent, width: 5.0)),
           enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(25.0),
             borderSide: BorderSide(color: appColor, width: 5.0),
           ),
           focusedErrorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(25.0),
             borderSide: BorderSide(color: Colors.red[400], width: 5.0),
           ),
           errorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(25.0),
             borderSide: BorderSide(color: Colors.red[200], width: 5.0),
           )),
       validator: (val) {
@@ -115,23 +136,30 @@ class _SignInState extends State<SignIn> {
   }
 
   Widget signInButton(SignInViewModel model) {
-    return RaisedButton(
-      color: appColor,
-      child: Text('Sign in', style: TextStyle(color: Colors.black)),
-      onPressed: () async {
-        if (_formKey.currentState.validate()) {
-          try {
-            User user = await model.signIn(
-                emailController.text, passwordController.text);
-          } catch (error) {
-            final snackbar = SnackBar(
-              content: Text(error.message),
-              backgroundColor: Colors.red,
-            );
-            _scaffoldKey.currentState.showSnackBar(snackbar);
+    return ButtonTheme(
+      minWidth: 150.0,
+      height: 50.0,
+      child: RaisedButton(
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(25.0),
+            side: BorderSide(color: Colors.black)),
+        color: appColor,
+        child: Text('Sign in', style: TextStyle(color: Colors.black)),
+        onPressed: () async {
+          if (_formKey.currentState.validate()) {
+            try {
+              User user = await model.signIn(
+                  emailController.text, passwordController.text);
+            } catch (error) {
+              final snackbar = SnackBar(
+                content: Text(error.message),
+                backgroundColor: Colors.red,
+              );
+              _scaffoldKey.currentState.showSnackBar(snackbar);
+            }
           }
-        }
-      },
+        },
+      ),
     );
   }
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:movilfinalapp/base/model.dart';
 import 'package:movilfinalapp/base/view.dart';
+import 'package:movilfinalapp/models/product.dart';
+import 'package:movilfinalapp/screens/products/products.dart';
 import 'package:movilfinalapp/shared/constants.dart';
 import 'package:movilfinalapp/shared/loading.dart';
 import 'package:movilfinalapp/viewmodels/home_vm.dart';
@@ -13,9 +15,8 @@ class Home extends StatelessWidget {
         return Scaffold(
             resizeToAvoidBottomPadding: false,
             appBar: AppBar(
-              backgroundColor: appColor,
+              backgroundColor: Colors.transparent,
               elevation: 0.0,
-              title: Text('Home', style: TextStyle(color: Colors.black)),
               actions: <Widget>[
                 IconButton(
                   onPressed: () async {
@@ -28,59 +29,54 @@ class Home extends StatelessWidget {
             ),
             floatingActionButton: FloatingActionButton(
               backgroundColor: appColor,
-              onPressed: () {},
+              onPressed: () async {
+                // Launch products view
+                SelectedProduct selectedProduct = await Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) => Products()));
+
+                model.addProductToCart(selectedProduct);
+              },
               child: Icon(Icons.add, color: Colors.black, size: 24.0),
             ),
             body: model.state == ViewState.Busy
                 ? Center(
                     child: Loading(),
                   )
-                : homeView(context));
+                : homeView(model.selectedProducts));
       },
     );
   }
 
-  Widget homeView(BuildContext context) {
+  Widget homeView(List<SelectedProduct> selectedProducts) {
     return Center(
       child: Container(
-        margin: EdgeInsets.only(left: 15.0, right: 15.0),
+        margin: EdgeInsets.symmetric(horizontal: 15.0),
         child: Padding(
           padding: const EdgeInsets.only(top: 20.0),
           child: Column(children: <Widget>[
             Text('Shopping list',
                 style: TextStyle(fontSize: 40.0, fontWeight: FontWeight.bold)),
             SizedBox(height: 20.0),
-            listOfProducts()
+            listOfProducts(selectedProducts)
           ]),
         ),
       ),
     );
   }
 
-  Widget listOfProducts() {
-    List<Product> products = [
-      Product(name: 'Tomato', price: 4.0),
-      Product(name: 'Pizza', price: 25.0),
-      Product(name: 'Pizza', price: 25.0),
-      Product(name: 'Pizza', price: 25.0),
-      Product(name: 'Pizza', price: 25.0),
-      Product(name: 'Pizza', price: 25.0),
-      Product(name: 'Pizza', price: 25.0),
-      Product(name: 'Pizza', price: 25.0),
-    ];
-
+  Widget listOfProducts(List<SelectedProduct> selectedProducts) {
     return Container(
         height: 570.0,
         child: ListView.builder(
-          itemCount: products.length,
+          itemCount: selectedProducts.length,
           itemBuilder: (context, position) {
-            var product = products[position];
-            return productCard(product, position);
+            return productCard(selectedProducts[position].product,
+                selectedProducts[position].quantity);
           },
         ));
   }
 
-  Widget productCard(Product product, int position) {
+  Widget productCard(Product product, int quantity) {
     return Card(
         child: Container(
       margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
@@ -106,7 +102,7 @@ class Home extends StatelessWidget {
                 color: Colors.blue,
                 child: Container(
                     padding: const EdgeInsets.all(5.0),
-                    child: Text('Quantity: ${0}',
+                    child: Text('Quantity: $quantity',
                         style: TextStyle(color: Colors.white))),
               )
             ],
@@ -115,11 +111,4 @@ class Home extends StatelessWidget {
       ),
     ));
   }
-}
-
-class Product {
-  String name;
-  double price;
-
-  Product({this.name, this.price});
 }
