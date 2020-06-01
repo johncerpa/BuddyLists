@@ -18,8 +18,6 @@ class AuthService {
           email: email, password: password);
 
       user = userFromFb(res.user);
-
-      print(user.name);
     } catch (error) {
       throw error;
     }

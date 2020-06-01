@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:movilfinalapp/base/model.dart';
 import 'package:movilfinalapp/base/view.dart';
+import 'package:movilfinalapp/screens/listInfo/list_info.dart';
 import 'package:movilfinalapp/shared/loading.dart';
 import 'package:movilfinalapp/viewmodels/friends_vm.dart';
 
@@ -79,6 +80,10 @@ class _FriendsState extends State<Friends> {
             style: TextStyle(fontWeight: FontWeight.w500)),
         onTap: () {
           // Show owner name and products
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => ListInfo(
+                    listInformation: list,
+                  )));
         },
       ),
     ));

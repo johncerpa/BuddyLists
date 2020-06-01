@@ -64,6 +64,16 @@ class _HomeState extends State<Home> {
                   : Text('No products added',
                       style: TextStyle(
                           fontWeight: FontWeight.w100, fontSize: 20.0)),
+              model.selectedProducts.length > 0
+                  ? Text('Total',
+                      style: TextStyle(
+                          fontSize: 30.0, fontWeight: FontWeight.w500))
+                  : SizedBox(),
+              model.selectedProducts.length > 0
+                  ? Container(
+                      margin: EdgeInsets.only(bottom: 15.0),
+                      child: total(model.selectedProducts))
+                  : SizedBox(),
               updateListButton(model)
             ]),
           ),
@@ -72,9 +82,29 @@ class _HomeState extends State<Home> {
     );
   }
 
+  Widget total(List<SelectedProduct> products) {
+    return Card(
+      color: Colors.green,
+      child: Container(
+          width: 150.0,
+          height: 50.0,
+          padding: const EdgeInsets.all(5.0),
+          child: Center(
+            child: Text('\$${getTotal(products)}',
+                style: TextStyle(fontSize: 25.0, color: Colors.white)),
+          )),
+    );
+  }
+
+  String getTotal(List<SelectedProduct> products) {
+    double total = 0.0;
+    products.forEach((p) => total += (p.product.price * p.quantity));
+    return total.toString();
+  }
+
   Widget listOfProducts(HomeViewModel model) {
     return Container(
-        height: 550.0,
+        height: 440.0,
         child: ListView.builder(
           itemCount: model.selectedProducts.length,
           itemBuilder: (context, position) {
