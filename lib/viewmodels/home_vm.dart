@@ -1,26 +1,35 @@
 import 'package:movilfinalapp/base/model.dart';
 import 'package:movilfinalapp/services/auth.dart';
 import 'package:movilfinalapp/services/auth_provider.dart';
-import 'package:movilfinalapp/services/products_service.dart';
+import 'package:movilfinalapp/services/lists_service.dart';
 import 'package:movilfinalapp/shared/constants.dart';
 import '../locator.dart';
 
 class HomeViewModel extends BaseModel {
   final AuthService authService = locator<AuthService>();
   final AuthProvider authProvider = locator<AuthProvider>();
-  final ProductService productService = locator<ProductService>();
+  final ListsService listsService = locator<ListsService>();
 
-  final selectedProducts = List<SelectedProduct>();
+  List<SelectedProduct> get selectedProducts => listsService.userList;
 
   addProductToCart(SelectedProduct selectedProduct) {
     if (selectedProduct != null) {
-      selectedProducts.add(selectedProduct);
+      listsService.userList.add(selectedProduct);
     }
     notifyListeners();
   }
 
+  removeProduct(int position) {
+    listsService.userList.removeAt(position);
+    notifyListeners();
+  }
+
   postList() async {
-    productService.postList(selectedProducts);
+    try {
+      await listsService.postList();
+    } catch (error) {
+      throw error;
+    }
   }
 
   Future logout() async {

@@ -42,20 +42,20 @@ class _CentralState extends State<Central> {
               type: BottomNavigationBarType.fixed,
               items: const <BottomNavigationBarItem>[
                 BottomNavigationBarItem(
-                    icon: Icon(Icons.shopping_cart, color: Colors.black),
+                    icon: Icon(
+                      Icons.shopping_cart,
+                    ),
                     title: Text('My List')),
                 BottomNavigationBarItem(
-                    icon: Icon(Icons.person, color: Colors.black),
-                    title: Text('Friends')),
+                    icon: Icon(Icons.person), title: Text('Friends')),
                 BottomNavigationBarItem(
-                    icon: Icon(Icons.save, color: Colors.black),
-                    title: Text('Save')),
+                    icon: Icon(Icons.save), title: Text('Save')),
                 BottomNavigationBarItem(
-                    icon: Icon(Icons.book, color: Colors.black),
-                    title: Text('History'))
+                    icon: Icon(Icons.book), title: Text('History'))
               ],
               currentIndex: _selectedIndex,
-              selectedItemColor: Colors.black,
+              selectedItemColor: Colors.white,
+              selectedIconTheme: IconThemeData(color: Colors.white),
               onTap: _onItemTapped,
             ),
           ),

@@ -15,11 +15,14 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
     return BaseView<HomeViewModel>(
       builder: (context, model, child) {
         return Scaffold(
+            key: _scaffoldKey,
             resizeToAvoidBottomPadding: false,
             appBar: AppBar(
               backgroundColor: Colors.transparent,
@@ -57,7 +60,7 @@ class _HomeState extends State<Home> {
                       TextStyle(fontSize: 40.0, fontWeight: FontWeight.bold)),
               SizedBox(height: 20.0),
               model.selectedProducts.length > 0
-                  ? listOfProducts(model.selectedProducts)
+                  ? listOfProducts(model)
                   : Text('No products added',
                       style: TextStyle(
                           fontWeight: FontWeight.w100, fontSize: 20.0)),
@@ -69,52 +72,59 @@ class _HomeState extends State<Home> {
     );
   }
 
-  Widget listOfProducts(List<SelectedProduct> selectedProducts) {
+  Widget listOfProducts(HomeViewModel model) {
     return Container(
         height: 550.0,
         child: ListView.builder(
-          itemCount: selectedProducts.length,
+          itemCount: model.selectedProducts.length,
           itemBuilder: (context, position) {
-            return productCard(selectedProducts[position].product,
-                selectedProducts[position].quantity);
+            return productCard(model.selectedProducts[position].product,
+                model.selectedProducts[position].quantity, position, model);
           },
         ));
   }
 
-  Widget productCard(Product product, int quantity) {
-    return Card(
-        child: Container(
-      margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
-      child: ListTile(
-        leading: Icon(Icons.fastfood, size: 30.0),
-        title:
-            Text(product.name, style: TextStyle(fontWeight: FontWeight.w500)),
-        subtitle: Container(
-          margin: EdgeInsets.only(
-            top: 5.0,
-          ),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Card(
-                color: Colors.green,
-                child: Container(
-                    padding: const EdgeInsets.all(5.0),
-                    child: Text('Price: \$${product.price.toString()}',
-                        style: TextStyle(color: Colors.white))),
-              ),
-              Card(
-                color: Colors.blue,
-                child: Container(
-                    padding: const EdgeInsets.all(5.0),
-                    child: Text('Quantity: $quantity',
-                        style: TextStyle(color: Colors.white))),
-              )
-            ],
+  Widget productCard(
+      Product product, int quantity, int position, HomeViewModel model) {
+    return Dismissible(
+      key: UniqueKey(),
+      onDismissed: (direction) {
+        model.removeProduct(position);
+      },
+      child: Card(
+          child: Container(
+        margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
+        child: ListTile(
+          leading: Icon(Icons.fastfood, size: 30.0),
+          title:
+              Text(product.name, style: TextStyle(fontWeight: FontWeight.w500)),
+          subtitle: Container(
+            margin: EdgeInsets.only(
+              top: 5.0,
+            ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Card(
+                  color: Colors.green,
+                  child: Container(
+                      padding: const EdgeInsets.all(5.0),
+                      child: Text('Price: \$${product.price.toString()}',
+                          style: TextStyle(color: Colors.white))),
+                ),
+                Card(
+                  color: Colors.blue,
+                  child: Container(
+                      padding: const EdgeInsets.all(5.0),
+                      child: Text('Quantity: $quantity',
+                          style: TextStyle(color: Colors.white))),
+                )
+              ],
+            ),
           ),
         ),
-      ),
-    ));
+      )),
+    );
   }
 
   Widget updateListButton(HomeViewModel model) {
@@ -128,8 +138,17 @@ class _HomeState extends State<Home> {
               ),
               color: appColor,
               child: Text('Update list', style: TextStyle(fontSize: 17)),
-              onPressed: () {
-                model.postList();
+              onPressed: () async {
+                try {
+                  await model.postList();
+                } catch (error) {
+                  final snackbar = SnackBar(
+                    backgroundColor: Colors.red,
+                    content: Text('Could not update/post the list',
+                        style: TextStyle(color: Colors.white)),
+                  );
+                  _scaffoldKey.currentState.showSnackBar(snackbar);
+                }
               },
             ),
           )
