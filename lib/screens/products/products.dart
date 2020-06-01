@@ -48,32 +48,9 @@ class _ProductsState extends State<Products> {
                       style: TextStyle(
                           fontSize: 24.0, fontWeight: FontWeight.w600))
                   : SizedBox(),
-              selectedProduct != null
-                  ? TextField(
-                      controller: qtyController,
-                      decoration:
-                          InputDecoration(labelText: 'Enter the quantity'),
-                      keyboardType: TextInputType.number,
-                      inputFormatters: <TextInputFormatter>[
-                        WhitelistingTextInputFormatter.digitsOnly
-                      ],
-                    )
-                  : SizedBox(),
+              quantityField(),
               SizedBox(height: 20.0),
-              selectedProduct != null
-                  ? RaisedButton(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18.0),
-                          side: BorderSide(color: Colors.black)),
-                      color: appColor,
-                      child: Text('Add'),
-                      onPressed: () {
-                        Navigator.of(context).pop(SelectedProduct(
-                            product: selectedProduct,
-                            quantity: int.parse(qtyController.text)));
-                      },
-                    )
-                  : SizedBox()
+              addButton()
             ],
           ),
         ),
@@ -128,5 +105,35 @@ class _ProductsState extends State<Products> {
         },
       ),
     ));
+  }
+
+  Widget quantityField() {
+    return selectedProduct != null
+        ? TextField(
+            controller: qtyController,
+            decoration: InputDecoration(labelText: 'Enter the quantity'),
+            keyboardType: TextInputType.number,
+            inputFormatters: <TextInputFormatter>[
+              WhitelistingTextInputFormatter.digitsOnly
+            ],
+          )
+        : SizedBox();
+  }
+
+  Widget addButton() {
+    return selectedProduct != null
+        ? RaisedButton(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(18.0),
+                side: BorderSide(color: Colors.black)),
+            color: appColor,
+            child: Text('Add'),
+            onPressed: () {
+              Navigator.of(context).pop(SelectedProduct(
+                  product: selectedProduct,
+                  quantity: int.parse(qtyController.text)));
+            },
+          )
+        : SizedBox();
   }
 }

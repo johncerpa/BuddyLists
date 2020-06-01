@@ -43,30 +43,34 @@ class _SignInState extends State<SignIn> {
           body: Container(
               margin: EdgeInsets.only(top: 140.0),
               padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
-              child: Form(
-                key: _formKey,
-                child: Column(children: <Widget>[
-                  emailField(),
-                  SizedBox(
-                    height: 20.0,
-                  ),
-                  passwordField(),
-                  SizedBox(height: 20.0),
-                  signInButton(model),
-                  SizedBox(height: 10.0),
-                  ButtonTheme(
-                    minWidth: 150.0,
-                    height: 50.0,
-                    child: RaisedButton(
-                        color: Colors.white,
-                        shape: RoundedRectangleBorder(
+              child: SingleChildScrollView(
+                child: Form(
+                  key: _formKey,
+                  child: Column(children: <Widget>[
+                    emailField(),
+                    SizedBox(
+                      height: 20.0,
+                    ),
+                    passwordField(),
+                    SizedBox(height: 20.0),
+                    signInButton(model),
+                    SizedBox(height: 10.0),
+                    ButtonTheme(
+                      minWidth: 150.0,
+                      height: 50.0,
+                      child: RaisedButton(
+                          color: Colors.white,
+                          shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(25.0),
-                            side: BorderSide(color: Colors.black)),
-                        onPressed: () => widget.toggleView(),
-                        child: Text('Sign up')),
-                  ),
-                  model.state == ViewState.Busy ? Loading() : SizedBox()
-                ]),
+                          ),
+                          onPressed: () => widget.toggleView(),
+                          child: Text('Sign up',
+                              style: TextStyle(fontSize: 18.0))),
+                    ),
+                    SizedBox(height: 10.0),
+                    model.state == ViewState.Busy ? Loading() : SizedBox()
+                  ]),
+                ),
               )),
         ),
       ),
@@ -78,6 +82,7 @@ class _SignInState extends State<SignIn> {
       controller: emailController,
       decoration: InputDecoration(
           hintText: 'Email',
+          prefixIcon: Icon(Icons.email),
           focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(25.0),
               borderSide: BorderSide(color: Colors.greenAccent, width: 5.0)),
@@ -108,6 +113,7 @@ class _SignInState extends State<SignIn> {
       obscureText: true,
       decoration: InputDecoration(
           hintText: 'Password',
+          prefixIcon: Icon(Icons.vpn_key),
           focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(25.0),
               borderSide: BorderSide(color: Colors.greenAccent, width: 5.0)),
@@ -141,10 +147,11 @@ class _SignInState extends State<SignIn> {
       height: 50.0,
       child: RaisedButton(
         shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(25.0),
-            side: BorderSide(color: Colors.black)),
+          borderRadius: BorderRadius.circular(25.0),
+        ),
         color: appColor,
-        child: Text('Sign in', style: TextStyle(color: Colors.black)),
+        child: Text('Sign in',
+            style: TextStyle(color: Colors.black, fontSize: 18.0)),
         onPressed: () async {
           if (_formKey.currentState.validate()) {
             try {

@@ -4,28 +4,16 @@ import 'package:movilfinalapp/services/auth.dart';
 import 'package:movilfinalapp/services/auth_provider.dart';
 import '../locator.dart';
 
-class SignUpViewModel extends BaseModel {
+class FriendsViewModel extends BaseModel {
   final AuthService authService = locator<AuthService>();
   final AuthProvider authProvider = locator<AuthProvider>();
 
-  User get user => authService.user;
+  final friends = List<User>();
 
-  Future signUp(String name, String email, String password) async {
+  Future logout() async {
     setState(ViewState.Busy);
-
-    try {
-      await authService.signUp(name, email, password);
-      authProvider.setSignedIn();
-    } catch (error) {
-      throw error;
-    }
-
-    notifyListeners();
-    setState(ViewState.Idle);
-  }
-
-  setToIdle() {
-    notifyListeners();
+    await authService.signOut();
+    authProvider.logout();
     setState(ViewState.Idle);
   }
 }

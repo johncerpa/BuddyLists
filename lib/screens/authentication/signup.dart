@@ -16,6 +16,7 @@ class SignUp extends StatefulWidget {
 
 class _SignUpState extends State<SignUp> {
   // Form state
+  TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
@@ -45,32 +46,72 @@ class _SignUpState extends State<SignUp> {
                       margin: EdgeInsets.only(top: 140.0),
                       padding: EdgeInsets.symmetric(
                           vertical: 20.0, horizontal: 50.0),
-                      child: Form(
-                        key: _formKey,
-                        child: Column(children: <Widget>[
-                          emailField(),
-                          SizedBox(
-                            height: 20.0,
-                          ),
-                          passwordField(),
-                          SizedBox(height: 20.0),
-                          signUpButton(model),
-                          SizedBox(height: 10.0),
-                          ButtonTheme(
-                            minWidth: 150.0,
-                            height: 50.0,
-                            child: RaisedButton(
-                                color: Colors.white,
-                                shape: RoundedRectangleBorder(
+                      child: SingleChildScrollView(
+                        child: Form(
+                          key: _formKey,
+                          child: Column(children: <Widget>[
+                            nameField(),
+                            SizedBox(
+                              height: 20.0,
+                            ),
+                            emailField(),
+                            SizedBox(
+                              height: 20.0,
+                            ),
+                            passwordField(),
+                            SizedBox(height: 20.0),
+                            signUpButton(model),
+                            SizedBox(height: 10.0),
+                            ButtonTheme(
+                              minWidth: 150.0,
+                              height: 50.0,
+                              child: RaisedButton(
+                                  color: Colors.white,
+                                  shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(25.0),
-                                    side: BorderSide(color: Colors.black)),
-                                onPressed: () => widget.toggleView(),
-                                child: Text('Sign in')),
-                          ),
-                          model.state == ViewState.Busy ? Loading() : SizedBox()
-                        ]),
+                                  ),
+                                  onPressed: () => widget.toggleView(),
+                                  child: Text('Sign in',
+                                      style: TextStyle(fontSize: 18.0))),
+                            ),
+                            SizedBox(height: 10.0),
+                            model.state == ViewState.Busy
+                                ? Loading()
+                                : SizedBox()
+                          ]),
+                        ),
                       ))),
             ));
+  }
+
+  Widget nameField() {
+    return TextFormField(
+      controller: nameController,
+      decoration: InputDecoration(
+          hintText: 'Full name',
+          prefixIcon: Icon(Icons.person),
+          focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(25.0),
+              borderSide: BorderSide(color: Colors.greenAccent, width: 5.0)),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(25.0),
+            borderSide: BorderSide(color: appColor, width: 5.0),
+          ),
+          focusedErrorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(25.0),
+            borderSide: BorderSide(color: Colors.red[400], width: 5.0),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(25.0),
+            borderSide: BorderSide(color: Colors.red[200], width: 5.0),
+          )),
+      validator: (val) {
+        if (val.isEmpty) {
+          return 'Name cannot be empty';
+        }
+        return null;
+      },
+    );
   }
 
   Widget emailField() {
@@ -78,6 +119,7 @@ class _SignUpState extends State<SignUp> {
       controller: emailController,
       decoration: InputDecoration(
           hintText: 'Email',
+          prefixIcon: Icon(Icons.email),
           focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(25.0),
               borderSide: BorderSide(color: Colors.greenAccent, width: 5.0)),
@@ -108,6 +150,7 @@ class _SignUpState extends State<SignUp> {
       obscureText: true,
       decoration: InputDecoration(
           hintText: 'Password',
+          prefixIcon: Icon(Icons.vpn_key),
           focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(25.0),
               borderSide: BorderSide(color: Colors.greenAccent, width: 5.0)),
@@ -141,14 +184,15 @@ class _SignUpState extends State<SignUp> {
       height: 50.0,
       child: RaisedButton(
         shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(25.0),
-            side: BorderSide(color: Colors.black)),
+          borderRadius: BorderRadius.circular(25.0),
+        ),
         color: appColor,
-        child: Text('Sign up', style: TextStyle(color: Colors.black)),
+        child: Text('Sign up',
+            style: TextStyle(color: Colors.black, fontSize: 18.0)),
         onPressed: () async {
           if (_formKey.currentState.validate()) {
             try {
-              User user = await model.signUp(
+              User user = await model.signUp(nameController.text,
                   emailController.text, passwordController.text);
             } catch (error) {
               final snackbar = SnackBar(

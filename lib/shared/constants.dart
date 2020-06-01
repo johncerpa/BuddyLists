@@ -1,11 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:movilfinalapp/models/product.dart';
 
-Color appColor = Color.fromRGBO(253, 253, 150, 1.0);
+Color appColor = Colors.yellow[600];
 
 class SelectedProduct {
   Product product;
   int quantity;
 
   SelectedProduct({this.product, this.quantity});
+
+  Map<String, dynamic> toJson() => _selectedProductToJson(this);
+
+  Map<String, dynamic> _selectedProductToJson(SelectedProduct selectedProduct) {
+    return <String, dynamic>{
+      'productName': selectedProduct.product.name,
+      'productPrice': selectedProduct.product.price,
+      'quantity': selectedProduct.quantity
+    };
+  }
 }

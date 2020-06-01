@@ -7,7 +7,9 @@ class AuthService {
   User user;
 
   User userFromFb(FirebaseUser user) {
-    return user != null ? User(uid: user.uid) : null;
+    return user != null
+        ? User(uid: user.uid, email: user.email, name: user.displayName)
+        : null;
   }
 
   Future signIn(String email, String password) async {
@@ -16,17 +18,26 @@ class AuthService {
           email: email, password: password);
 
       user = userFromFb(res.user);
+
+      print(user.name);
     } catch (error) {
       throw error;
     }
   }
 
-  Future<User> signUp(String email, String password) async {
+  Future<User> signUp(String name, String email, String password) async {
     try {
-      AuthResult res = await _auth.createUserWithEmailAndPassword(
+      await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
 
-      return userFromFb(res.user);
+      FirebaseUser user = await _auth.currentUser();
+
+      UserUpdateInfo updateInfo = UserUpdateInfo();
+      updateInfo.displayName = name;
+
+      user.updateProfile(updateInfo);
+
+      return userFromFb(user);
     } catch (error) {
       throw error;
     }
