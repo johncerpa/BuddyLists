@@ -5,6 +5,7 @@ import 'package:movilfinalapp/models/user.dart';
 import 'package:movilfinalapp/shared/constants.dart';
 import 'package:movilfinalapp/shared/loading.dart';
 import 'package:movilfinalapp/viewmodels/signin_vm.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class SignIn extends StatefulWidget {
   final Function toggleView;
@@ -24,56 +25,60 @@ class _SignInState extends State<SignIn> {
   @override
   Widget build(BuildContext context) {
     return BaseView<SignInViewModel>(
-      builder: (context, model, child) => Container(
-        decoration: BoxDecoration(
-            image: DecorationImage(
-          fit: BoxFit.cover,
-          image: AssetImage('assets/images/kiwi.jpg'),
-        )),
-        child: Scaffold(
-          appBar: AppBar(
-              elevation: 0.0,
-              backgroundColor: Colors.transparent,
-              title: Text('Sign in now!',
-                  style: TextStyle(
-                      fontSize: 24.0,
-                      color: Colors.black,
-                      fontWeight: FontWeight.w500))),
-          backgroundColor: Colors.transparent,
-          body: Container(
-              margin: EdgeInsets.only(top: 140.0),
-              padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
-              child: SingleChildScrollView(
-                child: Form(
-                  key: _formKey,
-                  child: Column(children: <Widget>[
-                    emailField(),
-                    SizedBox(
-                      height: 20.0,
-                    ),
-                    passwordField(),
-                    SizedBox(height: 20.0),
-                    signInButton(model),
-                    SizedBox(height: 10.0),
-                    SizedBox(height: 10.0),
-                    ButtonTheme(
-                      minWidth: 150.0,
-                      height: 50.0,
-                      child: RaisedButton(
-                          color: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(25.0),
-                          ),
-                          onPressed: () => widget.toggleView(),
-                          child: Text('Sign up',
-                              style: TextStyle(fontSize: 18.0))),
-                    ),
-                    SizedBox(height: 10.0),
-                    model.state == ViewState.Busy ? Loading() : SizedBox()
-                  ]),
-                ),
-              )),
-        ),
+      builder: (context, model, child) => Stack(
+        children: <Widget>[
+          Container(color: Colors.green),
+          Container(
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+            fit: BoxFit.cover,
+            image: AssetImage('assets/images/kiwi.jpg'),
+          ))),
+          Scaffold(
+            appBar: AppBar(
+                elevation: 0.0,
+                backgroundColor: Colors.transparent,
+                title: Text('Sign in now!',
+                    style: TextStyle(
+                        fontSize: 24.0,
+                        color: Colors.black,
+                        fontWeight: FontWeight.w500))),
+            backgroundColor: Colors.transparent,
+            body: Container(
+                margin: EdgeInsets.only(top: 140.0),
+                padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
+                child: SingleChildScrollView(
+                  child: Form(
+                    key: _formKey,
+                    child: Column(children: <Widget>[
+                      emailField(),
+                      SizedBox(
+                        height: 20.0,
+                      ),
+                      passwordField(),
+                      SizedBox(height: 20.0),
+                      signInButton(model),
+                      SizedBox(height: 10.0),
+                      SizedBox(height: 10.0),
+                      ButtonTheme(
+                        minWidth: 150.0,
+                        height: 50.0,
+                        child: RaisedButton(
+                            color: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(25.0),
+                            ),
+                            onPressed: () => widget.toggleView(),
+                            child: Text('Sign up',
+                                style: TextStyle(fontSize: 18.0))),
+                      ),
+                      SizedBox(height: 10.0),
+                      model.state == ViewState.Busy ? Loading() : SizedBox()
+                    ]),
+                  ),
+                )),
+          ),
+        ],
       ),
     );
   }
