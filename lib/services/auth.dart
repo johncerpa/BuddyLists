@@ -1,9 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:movilfinalapp/models/user.dart';
+import 'package:movilfinalapp/services/lists_service.dart';
+import '../locator.dart';
 
 class AuthService {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-
+  final _auth = FirebaseAuth.instance;
+  final listsService = locator<ListsService>();
   User user;
 
   User userFromFb(FirebaseUser user) {
@@ -43,6 +45,7 @@ class AuthService {
 
   Future signOut() async {
     try {
+      listsService.clearInformation();
       return await _auth.signOut();
     } catch (e) {
       return null;

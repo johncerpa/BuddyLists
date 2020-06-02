@@ -53,7 +53,7 @@ class _HomeState extends State<Home> {
         child: Container(
           margin: EdgeInsets.symmetric(horizontal: 15.0),
           child: Padding(
-            padding: const EdgeInsets.only(top: 20.0),
+            padding: const EdgeInsets.only(top: 5.0),
             child: Column(children: <Widget>[
               Text('Shopping list',
                   style:
@@ -72,7 +72,7 @@ class _HomeState extends State<Home> {
               model.selectedProducts.length > 0
                   ? Container(
                       margin: EdgeInsets.only(bottom: 15.0),
-                      child: total(model.selectedProducts))
+                      child: totalView(model.selectedProducts))
                   : SizedBox(),
               updateListButton(model)
             ]),
@@ -82,7 +82,7 @@ class _HomeState extends State<Home> {
     );
   }
 
-  Widget total(List<SelectedProduct> products) {
+  Widget totalView(List<SelectedProduct> products) {
     return Card(
       color: Colors.green,
       child: Container(
@@ -104,7 +104,7 @@ class _HomeState extends State<Home> {
 
   Widget listOfProducts(HomeViewModel model) {
     return Container(
-        height: 440.0,
+        height: 455.0,
         child: ListView.builder(
           itemCount: model.selectedProducts.length,
           itemBuilder: (context, position) {
@@ -171,6 +171,12 @@ class _HomeState extends State<Home> {
               onPressed: () async {
                 try {
                   await model.postList();
+                  final snackbar = SnackBar(
+                    backgroundColor: Colors.green,
+                    content: Text('List updated!',
+                        style: TextStyle(color: Colors.white)),
+                  );
+                  _scaffoldKey.currentState.showSnackBar(snackbar);
                 } catch (error) {
                   final snackbar = SnackBar(
                     backgroundColor: Colors.red,

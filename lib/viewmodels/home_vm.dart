@@ -6,9 +6,9 @@ import 'package:movilfinalapp/shared/constants.dart';
 import '../locator.dart';
 
 class HomeViewModel extends BaseModel {
-  final AuthService authService = locator<AuthService>();
-  final AuthProvider authProvider = locator<AuthProvider>();
-  final ListsService listsService = locator<ListsService>();
+  final authService = locator<AuthService>();
+  final authProvider = locator<AuthProvider>();
+  final listsService = locator<ListsService>();
 
   List<SelectedProduct> get selectedProducts => listsService.userList;
 

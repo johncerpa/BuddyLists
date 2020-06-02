@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:movilfinalapp/models/product.dart';
+import 'package:movilfinalapp/shared/constants.dart';
 
-class ListInfo extends StatefulWidget {
+class HistoryListInfo extends StatefulWidget {
   final dynamic listInformation;
-  ListInfo({this.listInformation});
+  HistoryListInfo({this.listInformation});
 
   @override
-  _ListInfoState createState() => _ListInfoState();
+  _HistoryListInfoState createState() => _HistoryListInfoState();
 }
 
-class _ListInfoState extends State<ListInfo> {
+class _HistoryListInfoState extends State<HistoryListInfo> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,7 +25,7 @@ class _ListInfoState extends State<ListInfo> {
           child: Column(
             children: <Widget>[
               Text(
-                '${widget.listInformation['data']['name']}\'s list',
+                '${widget.listInformation['name']}\'s list',
                 style: TextStyle(fontSize: 34.0, fontWeight: FontWeight.w700),
               ),
               SizedBox(height: 20.0),
@@ -49,15 +50,14 @@ class _ListInfoState extends State<ListInfo> {
           height: 50.0,
           padding: const EdgeInsets.all(5.0),
           child: Center(
-            child: Text(
-                '\$${getTotal(widget.listInformation['data']['products'])}',
+            child: Text('\$${getTotal(widget.listInformation['products'])}',
                 style: TextStyle(fontSize: 25.0, color: Colors.white)),
           )),
     );
   }
 
   Widget listOfProducts() {
-    dynamic products = widget.listInformation['data']['products'];
+    dynamic products = widget.listInformation['products'];
 
     return Container(
         height: 400.0,
@@ -68,12 +68,12 @@ class _ListInfoState extends State<ListInfo> {
             Product product =
                 Product(name: p['productName'], price: p['productPrice']);
             int quantity = p['quantity'];
-            return productCard(product, quantity);
+            return productCard(product, quantity, p['isOwner']);
           },
         ));
   }
 
-  Widget productCard(Product product, int quantity) {
+  Widget productCard(Product product, int quantity, bool isOwner) {
     return Card(
         child: Container(
       margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
@@ -100,6 +100,13 @@ class _ListInfoState extends State<ListInfo> {
                 child: Container(
                     padding: const EdgeInsets.all(5.0),
                     child: Text('Quantity: $quantity',
+                        style: TextStyle(color: Colors.white))),
+              ),
+              Card(
+                color: isOwner ? appColor : Colors.red[300],
+                child: Container(
+                    padding: const EdgeInsets.all(5.0),
+                    child: Text(isOwner ? 'Mine' : 'Friend',
                         style: TextStyle(color: Colors.white))),
               )
             ],

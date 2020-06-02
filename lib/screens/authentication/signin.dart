@@ -55,6 +55,7 @@ class _SignInState extends State<SignIn> {
                     SizedBox(height: 20.0),
                     signInButton(model),
                     SizedBox(height: 10.0),
+                    SizedBox(height: 10.0),
                     ButtonTheme(
                       minWidth: 150.0,
                       height: 50.0,

@@ -3,7 +3,9 @@ import 'package:movilfinalapp/services/auth.dart';
 import 'package:movilfinalapp/services/auth_provider.dart';
 import 'package:movilfinalapp/services/lists_service.dart';
 import 'package:movilfinalapp/viewmodels/friends_vm.dart';
+import 'package:movilfinalapp/viewmodels/history_vm.dart';
 import 'package:movilfinalapp/viewmodels/home_vm.dart';
+import 'package:movilfinalapp/viewmodels/save_vm.dart';
 import 'package:movilfinalapp/viewmodels/signin_vm.dart';
 import 'package:movilfinalapp/viewmodels/signup_vm.dart';
 
@@ -17,4 +19,6 @@ setupLocator() {
   locator.registerFactory(() => SignUpViewModel());
   locator.registerFactory(() => HomeViewModel());
   locator.registerFactory(() => FriendsViewModel());
+  locator.registerFactory(() => SaveViewModel());
+  locator.registerFactory(() => HistoryViewModel());
 }

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:movilfinalapp/base/model.dart';
 import 'package:movilfinalapp/base/view.dart';
@@ -11,6 +13,8 @@ class Friends extends StatefulWidget {
 }
 
 class _FriendsState extends State<Friends> {
+  dynamic selectedList;
+
   @override
   Widget build(BuildContext context) {
     return BaseView<FriendsViewModel>(
@@ -32,58 +36,74 @@ class _FriendsState extends State<Friends> {
               ]),
           body: model.state == ViewState.Busy
               ? Center(child: Loading())
-              : friendsView(model.lists),
+              : friendsView(model),
         );
       },
     );
   }
 
-  Widget friendsView(List<dynamic> lists) {
+  Widget friendsView(FriendsViewModel model) {
     return Center(
       child: Container(
         margin: EdgeInsets.symmetric(horizontal: 15.0),
         child: Padding(
-          padding: const EdgeInsets.only(top: 20.0),
+          padding: const EdgeInsets.only(top: 5.0),
           child: Column(children: <Widget>[
             Text('Friends lists',
                 style: TextStyle(fontSize: 40.0, fontWeight: FontWeight.bold)),
             SizedBox(height: 20.0),
-            lists.length > 0
-                ? listOfLists(lists)
+            model.lists.length > 0
+                ? listOfLists(model)
                 : Text('No friends lists available',
                     style:
-                        TextStyle(fontWeight: FontWeight.w100, fontSize: 20.0))
+                        TextStyle(fontWeight: FontWeight.w100, fontSize: 20.0)),
+            model.friendList != null
+                ? Text('Selected list',
+                    style:
+                        TextStyle(fontSize: 40.0, fontWeight: FontWeight.bold))
+                : SizedBox(),
+            model.friendList != null
+                ? listCard(model.friendList, model)
+                : SizedBox()
           ]),
         ),
       ),
     );
   }
 
-  Widget listOfLists(List<dynamic> lists) {
+  Widget listOfLists(FriendsViewModel model) {
     return Container(
-        height: 570.0,
+        height: 410.0,
         child: ListView.builder(
-          itemCount: lists.length,
+          itemCount: model.lists.length,
           itemBuilder: (context, position) {
-            return listCard(lists[position]);
+            return listCard(model.lists[position], model);
           },
         ));
   }
 
-  Widget listCard(dynamic list) {
+  Widget listCard(dynamic list, FriendsViewModel model) {
+    String name = list['data']['name'];
+
     return Card(
         child: Container(
       margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
       child: ListTile(
         leading: Icon(Icons.list, size: 30.0),
-        title: Text('List owner: ${list['name']}',
+        title: Text('List owner: $name',
             style: TextStyle(fontWeight: FontWeight.w500)),
-        onTap: () {
+        onLongPress: () {
           // Show owner name and products
           Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => ListInfo(
                     listInformation: list,
                   )));
+        },
+        onTap: () {
+          model.setFriendList(list);
+          setState(() {
+            selectedList = list;
+          });
         },
       ),
     ));

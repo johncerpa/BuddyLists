@@ -1,31 +1,31 @@
 import 'package:movilfinalapp/base/model.dart';
-import 'package:movilfinalapp/models/user.dart';
 import 'package:movilfinalapp/services/auth.dart';
 import 'package:movilfinalapp/services/auth_provider.dart';
+import 'package:movilfinalapp/services/lists_service.dart';
 import '../locator.dart';
 
-class SignUpViewModel extends BaseModel {
+class HistoryViewModel extends BaseModel {
   final authService = locator<AuthService>();
   final authProvider = locator<AuthProvider>();
+  final listsService = locator<ListsService>();
 
-  User get user => authService.user;
+  get historyLists => listsService.historyLists;
 
-  Future signUp(String name, String email, String password) async {
+  Future getHistoryLists() async {
     setState(ViewState.Busy);
-
     try {
-      await authService.signUp(name, email, password);
-      authProvider.setSignedIn();
+      await listsService.getHistoryLists();
+      notifyListeners();
     } catch (error) {
       throw error;
     }
-
-    notifyListeners();
     setState(ViewState.Idle);
   }
 
-  setToIdle() {
-    notifyListeners();
+  Future logout() async {
+    setState(ViewState.Busy);
+    await authService.signOut();
+    authProvider.logout();
     setState(ViewState.Idle);
   }
 }

@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:movilfinalapp/screens/friends/friends.dart';
+import 'package:movilfinalapp/screens/history/history.dart';
 import 'package:movilfinalapp/screens/home/home.dart';
+import 'package:movilfinalapp/screens/save/save.dart';
+import 'package:movilfinalapp/services/lists_service.dart';
 import 'package:movilfinalapp/shared/constants.dart';
+
+import '../../locator.dart';
 
 class Central extends StatefulWidget {
   @override
@@ -9,20 +14,17 @@ class Central extends StatefulWidget {
 }
 
 class _CentralState extends State<Central> {
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+  final listsService = locator<ListsService>();
+  final List<Widget> _children = [Home(), Friends(), Save(), History()];
   int _selectedIndex = 0;
-
-  _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
-  final List<Widget> _children = [Home(), Friends()];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        bottomNavigationBar: navBar(), body: _children[_selectedIndex]);
+        key: _scaffoldKey,
+        bottomNavigationBar: navBar(),
+        body: _children[_selectedIndex]);
   }
 
   Widget navBar() {
@@ -60,5 +62,18 @@ class _CentralState extends State<Central> {
             ),
           ),
         ));
+  }
+
+  _onItemTapped(int index) {
+    if (!listsService.isClosed) {
+      setState(() {
+        _selectedIndex = index;
+      });
+    } else {
+      final snackbar = SnackBar(
+        content: Text('Sorry, you cannot modify lists anymore'),
+      );
+      _scaffoldKey.currentState.showSnackBar(snackbar);
+    }
   }
 }
