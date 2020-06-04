@@ -34,3 +34,7 @@ flutter:
   assets:
     - assets/images/kiwi.jpg
     - assets/images/google_logo.png
+  fonts:
+    - family: SanFrancisco
+      fonts:
+        - asset: assets/fonts/san_francisco.ttf

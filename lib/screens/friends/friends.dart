@@ -68,8 +68,10 @@ class _FriendsState extends State<Friends> {
             model.lists.length > 0
                 ? listOfLists(model)
                 : Text('No friends lists available',
-                    style:
-                        TextStyle(fontWeight: FontWeight.w100, fontSize: 20.0)),
+                    style: TextStyle(
+                        fontWeight: FontWeight.w100,
+                        fontSize: 20.0,
+                        color: Colors.grey)),
             model.friendList != null
                 ? Text('Selected list',
                     style:

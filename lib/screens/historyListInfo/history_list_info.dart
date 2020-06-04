@@ -44,6 +44,9 @@ class _HistoryListInfoState extends State<HistoryListInfo> {
 
   Widget total() {
     return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(25.0),
+      ),
       color: Colors.green,
       child: Container(
           width: 150.0,

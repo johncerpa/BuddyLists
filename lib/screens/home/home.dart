@@ -61,41 +61,51 @@ class _HomeState extends State<Home> {
 
   Widget homeView(HomeViewModel model) {
     return SingleChildScrollView(
-      child: Center(
-        child: Container(
-          margin: EdgeInsets.symmetric(horizontal: 15.0),
-          child: Padding(
-            padding: const EdgeInsets.only(top: 15.0),
-            child: Column(children: <Widget>[
-              Text('Shopping list',
-                  style:
-                      TextStyle(fontSize: 36.0, fontWeight: FontWeight.bold)),
-              SizedBox(height: 20.0),
-              model.selectedProducts.length > 0
-                  ? listOfProducts(model)
-                  : Text('No products added',
-                      style: TextStyle(
-                          fontWeight: FontWeight.w100, fontSize: 20.0)),
-              model.selectedProducts.length > 0
-                  ? Text('Total',
-                      style: TextStyle(
-                          fontSize: 30.0, fontWeight: FontWeight.w500))
-                  : SizedBox(),
-              model.selectedProducts.length > 0
-                  ? Container(
-                      margin: EdgeInsets.only(bottom: 15.0),
-                      child: totalView(model.selectedProducts))
-                  : SizedBox(),
-              updateListButton(model)
-            ]),
+        child: Column(
+      children: <Widget>[
+        Center(
+          child: Container(
+            margin: EdgeInsets.symmetric(horizontal: 15.0),
+            child: Padding(
+              padding: const EdgeInsets.only(top: 15.0),
+              child: Column(children: <Widget>[
+                Text('Shopping list',
+                    style: TextStyle(
+                      fontSize: 36.0,
+                      fontWeight: FontWeight.bold,
+                    )),
+                SizedBox(height: 20.0),
+                model.selectedProducts.length > 0
+                    ? listOfProducts(model)
+                    : Text('No products added',
+                        style: TextStyle(
+                            fontWeight: FontWeight.w100,
+                            fontSize: 20.0,
+                            color: Colors.grey)),
+                model.selectedProducts.length > 0
+                    ? Text('Total',
+                        style: TextStyle(
+                            fontSize: 30.0, fontWeight: FontWeight.w500))
+                    : SizedBox(),
+                model.selectedProducts.length > 0
+                    ? Container(
+                        margin: EdgeInsets.only(bottom: 15.0),
+                        child: totalView(model.selectedProducts))
+                    : SizedBox(),
+                updateListButton(model)
+              ]),
+            ),
           ),
         ),
-      ),
-    );
+      ],
+    ));
   }
 
   Widget totalView(List<SelectedProduct> products) {
     return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(25.0),
+      ),
       color: Colors.green,
       child: Container(
           width: 150.0,

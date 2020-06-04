@@ -43,6 +43,9 @@ class _ListInfoState extends State<ListInfo> {
 
   Widget total() {
     return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(25.0),
+      ),
       color: Colors.green,
       child: Container(
           width: 150.0,

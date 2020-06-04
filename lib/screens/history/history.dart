@@ -77,9 +77,11 @@ class _HistoryState extends State<History> {
               SizedBox(height: 20.0),
               model.listsService.historyLists.length > 0
                   ? userLists(model)
-                  : Text('Save your list, please',
+                  : Text('Zero saved lists',
                       style: TextStyle(
-                          fontWeight: FontWeight.w100, fontSize: 20.0)),
+                          fontWeight: FontWeight.w100,
+                          fontSize: 20.0,
+                          color: Colors.grey)),
             ]),
           ),
         ),

@@ -73,7 +73,9 @@ class _SaveState extends State<Save> {
                   ? listOfProducts(model)
                   : Text('Save your list first',
                       style: TextStyle(
-                          fontWeight: FontWeight.w100, fontSize: 20.0)),
+                          fontWeight: FontWeight.w100,
+                          fontSize: 20.0,
+                          color: Colors.grey)),
               model.listsService.friendList != null
                   ? Text('Friend list',
                       style: TextStyle(

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:movilfinalapp/locator.dart';
 import 'package:movilfinalapp/screens/authentication/authentication.dart';
 import 'package:movilfinalapp/screens/central/central.dart';
-import 'package:movilfinalapp/screens/home/home.dart';
 import 'package:movilfinalapp/services/auth_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -19,9 +18,12 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (_) => _authProvider,
       child: MaterialApp(
-        title: 'Shopping app',
-        home: Wrapper(),
-      ),
+          title: 'Shopping app',
+          home: Wrapper(),
+          theme: ThemeData(
+              textTheme: Theme.of(context)
+                  .textTheme
+                  .apply(fontFamily: 'SanFrancisco'))),
     );
   }
 }

@@ -2,7 +2,6 @@ import 'package:movilfinalapp/base/model.dart';
 import 'package:movilfinalapp/models/user.dart';
 import 'package:movilfinalapp/services/auth.dart';
 import 'package:movilfinalapp/services/auth_provider.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import '../locator.dart';
 
 class SignInViewModel extends BaseModel {
@@ -24,6 +23,4 @@ class SignInViewModel extends BaseModel {
     notifyListeners();
     setState(ViewState.Idle);
   }
-
-  Future signInWithGoogle(String email, String password) {}
 }
