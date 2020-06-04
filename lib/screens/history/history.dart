@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:movilfinalapp/base/model.dart';
 import 'package:movilfinalapp/base/view.dart';
 import 'package:movilfinalapp/screens/historyListInfo/history_list_info.dart';
+import 'package:movilfinalapp/shared/constants.dart';
 import 'package:movilfinalapp/shared/loading.dart';
 import 'package:movilfinalapp/viewmodels/history_vm.dart';
 
@@ -21,6 +22,18 @@ class _HistoryState extends State<History> {
             key: _scaffoldKey,
             resizeToAvoidBottomPadding: false,
             appBar: AppBar(
+              centerTitle: true,
+              title: RichText(
+                  text: TextSpan(
+                      style: TextStyle(
+                          fontSize: 21.0, fontWeight: FontWeight.bold),
+                      children: [
+                    TextSpan(
+                        text: "Buddy",
+                        style: TextStyle(color: kSecondaryColor)),
+                    TextSpan(
+                        text: "Lists", style: TextStyle(color: kPrimaryColor))
+                  ])),
               backgroundColor: Colors.transparent,
               elevation: 0.0,
               actions: <Widget>[
@@ -56,11 +69,11 @@ class _HistoryState extends State<History> {
         child: Container(
           margin: EdgeInsets.symmetric(horizontal: 15.0),
           child: Padding(
-            padding: const EdgeInsets.only(top: 5.0),
+            padding: const EdgeInsets.only(top: 15.0),
             child: Column(children: <Widget>[
-              Text('My list',
+              Text('Saved lists',
                   style:
-                      TextStyle(fontSize: 40.0, fontWeight: FontWeight.bold)),
+                      TextStyle(fontSize: 36.0, fontWeight: FontWeight.bold)),
               SizedBox(height: 20.0),
               model.listsService.historyLists.length > 0
                   ? userLists(model)

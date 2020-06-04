@@ -24,8 +24,20 @@ class _SaveState extends State<Save> {
             key: _scaffoldKey,
             resizeToAvoidBottomPadding: false,
             appBar: AppBar(
+              centerTitle: true,
               backgroundColor: Colors.transparent,
               elevation: 0.0,
+              title: RichText(
+                  text: TextSpan(
+                      style: TextStyle(
+                          fontSize: 21.0, fontWeight: FontWeight.bold),
+                      children: [
+                    TextSpan(
+                        text: "Buddy",
+                        style: TextStyle(color: kSecondaryColor)),
+                    TextSpan(
+                        text: "Lists", style: TextStyle(color: kPrimaryColor))
+                  ])),
               actions: <Widget>[
                 IconButton(
                   onPressed: () async {
@@ -51,21 +63,21 @@ class _SaveState extends State<Save> {
         child: Container(
           margin: EdgeInsets.symmetric(horizontal: 15.0),
           child: Padding(
-            padding: const EdgeInsets.only(top: 5.0),
+            padding: const EdgeInsets.only(top: 15.0),
             child: Column(children: <Widget>[
               Text('My list',
                   style:
-                      TextStyle(fontSize: 40.0, fontWeight: FontWeight.bold)),
+                      TextStyle(fontSize: 36.0, fontWeight: FontWeight.bold)),
               SizedBox(height: 20.0),
               model.listsService.fbUserList != null
                   ? listOfProducts(model)
-                  : Text('Save your list, please',
+                  : Text('Save your list first',
                       style: TextStyle(
                           fontWeight: FontWeight.w100, fontSize: 20.0)),
               model.listsService.friendList != null
                   ? Text('Friend list',
                       style: TextStyle(
-                          fontSize: 40.0, fontWeight: FontWeight.bold))
+                          fontSize: 36.0, fontWeight: FontWeight.bold))
                   : SizedBox(),
               model.listsService.friendList != null
                   ? friendList(model)

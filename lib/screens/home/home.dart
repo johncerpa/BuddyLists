@@ -25,8 +25,20 @@ class _HomeState extends State<Home> {
             key: _scaffoldKey,
             resizeToAvoidBottomPadding: false,
             appBar: AppBar(
+              centerTitle: true,
               backgroundColor: Colors.transparent,
               elevation: 0.0,
+              title: RichText(
+                  text: TextSpan(
+                      style: TextStyle(
+                          fontSize: 21.0, fontWeight: FontWeight.bold),
+                      children: [
+                    TextSpan(
+                        text: "Buddy",
+                        style: TextStyle(color: kSecondaryColor)),
+                    TextSpan(
+                        text: "Lists", style: TextStyle(color: kPrimaryColor))
+                  ])),
               actions: <Widget>[
                 IconButton(
                   onPressed: () async {
@@ -53,11 +65,11 @@ class _HomeState extends State<Home> {
         child: Container(
           margin: EdgeInsets.symmetric(horizontal: 15.0),
           child: Padding(
-            padding: const EdgeInsets.only(top: 5.0),
+            padding: const EdgeInsets.only(top: 15.0),
             child: Column(children: <Widget>[
               Text('Shopping list',
                   style:
-                      TextStyle(fontSize: 40.0, fontWeight: FontWeight.bold)),
+                      TextStyle(fontSize: 36.0, fontWeight: FontWeight.bold)),
               SizedBox(height: 20.0),
               model.selectedProducts.length > 0
                   ? listOfProducts(model)

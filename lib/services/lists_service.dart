@@ -148,6 +148,7 @@ class ListsService {
 
   Future getHistoryLists() async {
     final user = await auth.currentUser();
+    historyLists.clear();
     try {
       final snapshot = await dbReference
           .collection('history')
