@@ -196,7 +196,7 @@ class _SignUpState extends State<SignUp> {
                   emailController.text, passwordController.text);
             } catch (error) {
               final snackbar = SnackBar(
-                content: Text(error.message),
+                content: Text(error.toString()),
                 backgroundColor: Colors.red,
               );
               _scaffoldKey.currentState.showSnackBar(snackbar);
