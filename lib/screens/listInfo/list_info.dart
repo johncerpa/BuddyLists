@@ -34,7 +34,8 @@ class _ListInfoState extends State<ListInfo> {
               Text('Total',
                   style:
                       TextStyle(fontSize: 30.0, fontWeight: FontWeight.w500)),
-              Row(children:<Widget>[total(),MaterialButton(child:Text("Chat chap" ,style:TextStyle(color:Colors.white) ,) , color: Colors.blue, onPressed: () {  Navigator.of(context).push(MaterialPageRoute(
+              Row(mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,children:<Widget>[total(),MaterialButton(child:Text("Chat chap" ,style:TextStyle(color:Colors.white) ,) , color: Colors.blue, onPressed: () {  Navigator.of(context).push(MaterialPageRoute(
                     
               builder: (context) => Chat(
                    widget.listInformation['data']['uid']
