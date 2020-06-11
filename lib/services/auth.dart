@@ -9,9 +9,13 @@ class AuthService {
   User user;
 
   User userFromFb(FirebaseUser user) {
-    return user != null
-        ? User(uid: user.uid, email: user.email, name: user.displayName)
-        : null;
+    print(user.uid);
+    if (user != null) {
+      return User(uid: user.uid, email: user.email, name: user.displayName);
+    } else {
+      print("Entro");
+      return null;
+    }
   }
 
   Future signIn(String email, String password) async {
@@ -34,9 +38,9 @@ class AuthService {
 
       UserUpdateInfo updateInfo = UserUpdateInfo();
       updateInfo.displayName = name;
-
+    
       user.updateProfile(updateInfo);
-
+      
       return userFromFb(user);
     } catch (error) {
       throw error;

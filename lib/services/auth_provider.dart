@@ -5,6 +5,7 @@ class AuthProvider extends ChangeNotifier {
   String email;
   String password;
   bool signedIn;
+  String uid;
 
   AuthProvider() {
     WidgetsFlutterBinding.ensureInitialized();
@@ -12,11 +13,14 @@ class AuthProvider extends ChangeNotifier {
     email = '';
     password = '';
     signedIn = false;
+    uid='';
     readPrefs();
   }
 
-  setSignedIn() {
+  setSignedIn(String uid) {
     signedIn = true;
+    this.uid=uid;
+    print(this.uid);
     savePrefs();
     notifyListeners();
   }
@@ -33,6 +37,7 @@ class AuthProvider extends ChangeNotifier {
     prefs.setBool('signedIn', signedIn);
     prefs.setString('email', email);
     prefs.setString('password', password);
+    prefs.setString('uid', uid);
   }
 
   // Keep signed in logic
@@ -41,11 +46,13 @@ class AuthProvider extends ChangeNotifier {
     bool shouldSignIn = prefs.getBool('signedIn') ?? false;
     String savedEmail = prefs.getString('email') ?? '';
     String savedPassword = prefs.getString('password') ?? '';
+    String  savedUid=prefs.getString('uid')??'';
 
     if (shouldSignIn) {
       email = savedEmail;
       password = savedPassword;
       signedIn = shouldSignIn;
+      this.uid=savedUid;
       notifyListeners();
     }
   }

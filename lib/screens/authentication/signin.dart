@@ -164,7 +164,8 @@ class _SignInState extends State<SignIn> {
               User user = await model.signIn(
                   emailController.text, passwordController.text);
             } catch (error) {
-              final snackbar = SnackBar(
+              print(error.toString());
+               final snackbar = SnackBar(
                 content: Text(error.message),
                 backgroundColor: Colors.red,
               );

@@ -108,7 +108,8 @@ class _FriendsState extends State<Friends> {
         title: Text('List owner: $name',
             style: TextStyle(fontWeight: FontWeight.w500)),
         onLongPress: () {
-          // Show owner name and products
+          // Show owner name and 
+          model.createChat(list['data']['uid']);
           Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => ListInfo(
                     listInformation: list,
@@ -126,6 +127,7 @@ class _FriendsState extends State<Friends> {
 
   getLists(FriendsViewModel model) async {
     try {
+      print("AAAA");
       await model.getLists();
     } catch (error) {
       // Could not load the lists

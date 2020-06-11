@@ -15,7 +15,8 @@ class SignInViewModel extends BaseModel {
 
     try {
       await authService.signIn(email, password);
-      authProvider.setSignedIn();
+      
+      authProvider.setSignedIn(authService.user.uid);
     } catch (error) {
       throw error;
     }

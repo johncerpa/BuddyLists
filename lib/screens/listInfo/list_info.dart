@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movilfinalapp/models/product.dart';
+import 'package:movilfinalapp/screens/chat/chat.dart';
 
 class ListInfo extends StatefulWidget {
   final dynamic listInformation;
@@ -33,7 +34,12 @@ class _ListInfoState extends State<ListInfo> {
               Text('Total',
                   style:
                       TextStyle(fontSize: 30.0, fontWeight: FontWeight.w500)),
-              total(),
+              Row(mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,children:<Widget>[total(),MaterialButton(child:Text("Chat" ,style:TextStyle(color:Colors.white) ,) , color: Colors.blue, onPressed: () {  Navigator.of(context).push(MaterialPageRoute(
+                    
+              builder: (context) => Chat(
+                   widget.listInformation['data']['uid']
+                  )));},)]),
             ],
           ),
         ),

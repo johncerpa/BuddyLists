@@ -14,8 +14,10 @@ class SignUpViewModel extends BaseModel {
     setState(ViewState.Busy);
 
     try {
-      await authService.signUp(name, email, password);
-      authProvider.setSignedIn();
+      var user = await authService.signUp(name, email, password);
+     
+
+      authProvider.setSignedIn(user.uid);
     } catch (error) {
       throw error;
     }
