@@ -1,6 +1,6 @@
 # movilfinalapp
 
-A new Flutter project.
+Esta aplicación sirve para crear listas de compra de productos alimenticios junto a un amigo al cual le quisieras hacer un favor. Esta aplicación la realice con mis amigos Brandon Gonzalez y Andy Arias.
 
 ## Getting Started
 
